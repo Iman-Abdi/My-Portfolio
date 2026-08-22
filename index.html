@@ -26,8 +26,9 @@
 </head>
 <body>
 
-<div class="top-accent" aria-hidden="true"></div>
+<div class="top-accent" aria-hidden="true"><div class="top-accent-fill" id="scrollProgress"></div></div>
 <div class="cursor-glow" id="cursorGlow"></div>
+<div class="cursor-dot" id="cursorDot"></div>
 
 <header class="site-header" id="siteHeader">
   <nav class="nav container">
@@ -79,11 +80,11 @@
   <section class="stats">
     <div class="container stats-grid">
       <div class="stat-item reveal">
-        <span class="stat-num">3+</span>
+        <span class="stat-num" data-count-to="3" data-suffix="+">0+</span>
         <span class="stat-label">Years Experience</span>
       </div>
       <div class="stat-item reveal">
-        <span class="stat-num">4</span>
+        <span class="stat-num" data-count-to="4" data-suffix="">0</span>
         <span class="stat-label">Pro Editing Tools</span>
       </div>
       <div class="stat-item reveal">
@@ -139,12 +140,12 @@
       </p>
 
       <div class="work-grid">
-        <article class="work-card reveal">
+        <article class="work-card work-card--featured reveal">
           <a href="https://www.facebook.com/share/v/1PyeQxRAHt/" class="work-thumb" target="_blank" rel="noopener">
             <span class="play-icon">&#9654;</span>
           </a>
           <div class="work-body">
-            <span class="work-tag">Promo</span>
+            <span class="work-tag work-tag--featured">&#9733; Featured</span>
             <h3>Event Announcement Promo</h3>
             <p>A promotional video announcing an upcoming event, edited to build excitement and drive attendance.</p>
             <a href="https://www.facebook.com/share/v/1PyeQxRAHt/" class="work-link" target="_blank" rel="noopener">Watch on Facebook &rarr;</a>

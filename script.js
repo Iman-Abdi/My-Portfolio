@@ -12,6 +12,17 @@ const onScroll = () => {
 onScroll();
 window.addEventListener('scroll', onScroll, { passive: true });
 
+// Scroll progress bar
+const scrollProgress = document.getElementById('scrollProgress');
+const updateScrollProgress = () => {
+  const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+  scrollProgress.style.width = progress + '%';
+};
+updateScrollProgress();
+window.addEventListener('scroll', updateScrollProgress, { passive: true });
+window.addEventListener('resize', updateScrollProgress);
+
 // Mobile nav toggle
 const navToggle = document.getElementById('navToggle');
 const navLinks = document.getElementById('navLinks');
@@ -38,15 +49,24 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeNav();
 });
 
-// Cursor glow (desktop only)
+// Cursor glow + custom cursor dot (desktop only)
 const glow = document.getElementById('cursorGlow');
+const cursorDot = document.getElementById('cursorDot');
 if (window.matchMedia('(pointer: fine)').matches) {
   window.addEventListener('mousemove', (e) => {
     glow.style.left = e.clientX + 'px';
     glow.style.top = e.clientY + 'px';
+    cursorDot.style.left = e.clientX + 'px';
+    cursorDot.style.top = e.clientY + 'px';
+    cursorDot.classList.add('active');
   });
-} else if (glow) {
-  glow.style.display = 'none';
+  document.querySelectorAll('a, button').forEach((el) => {
+    el.addEventListener('mouseenter', () => cursorDot.classList.add('hover'));
+    el.addEventListener('mouseleave', () => cursorDot.classList.remove('hover'));
+  });
+} else {
+  if (glow) glow.style.display = 'none';
+  if (cursorDot) cursorDot.style.display = 'none';
 }
 
 // Scroll reveal animations
@@ -80,6 +100,31 @@ const spyObserver = new IntersectionObserver(
   { rootMargin: '-45% 0px -50% 0px', threshold: 0 }
 );
 sections.forEach((section) => spyObserver.observe(section));
+
+// Animated stat counters
+const countEls = document.querySelectorAll('[data-count-to]');
+const countObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      const target = parseInt(el.getAttribute('data-count-to'), 10);
+      const suffix = el.getAttribute('data-suffix') || '';
+      const duration = 1200;
+      const start = performance.now();
+      const tick = (now) => {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(eased * target) + suffix;
+        if (progress < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+      countObserver.unobserve(el);
+    });
+  },
+  { threshold: 0.6 }
+);
+countEls.forEach((el) => countObserver.observe(el));
 
 // Back to top button
 const backToTop = document.getElementById('backToTop');
