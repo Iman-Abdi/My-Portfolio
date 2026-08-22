@@ -15,17 +15,27 @@ window.addEventListener('scroll', onScroll, { passive: true });
 // Mobile nav toggle
 const navToggle = document.getElementById('navToggle');
 const navLinks = document.getElementById('navLinks');
+const navBackdrop = document.getElementById('navBackdrop');
+
+const closeNav = () => {
+  navLinks.classList.remove('open');
+  navToggle.classList.remove('open');
+  navBackdrop.classList.remove('open');
+  navToggle.setAttribute('aria-expanded', 'false');
+};
+
 navToggle.addEventListener('click', () => {
   const isOpen = navLinks.classList.toggle('open');
   navToggle.classList.toggle('open', isOpen);
+  navBackdrop.classList.toggle('open', isOpen);
   navToggle.setAttribute('aria-expanded', String(isOpen));
 });
 navLinks.querySelectorAll('a').forEach((link) => {
-  link.addEventListener('click', () => {
-    navLinks.classList.remove('open');
-    navToggle.classList.remove('open');
-    navToggle.setAttribute('aria-expanded', 'false');
-  });
+  link.addEventListener('click', closeNav);
+});
+navBackdrop.addEventListener('click', closeNav);
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeNav();
 });
 
 // Cursor glow (desktop only)
