@@ -1,3 +1,6 @@
+// Fade the page in once styles/DOM are ready (avoids a flash of unstyled content)
+document.body.classList.add('loaded');
+
 // Footer year
 document.getElementById('year').textContent = new Date().getFullYear();
 
