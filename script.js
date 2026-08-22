@@ -50,3 +50,31 @@ const revealObserver = new IntersectionObserver(
   { threshold: 0.15 }
 );
 revealEls.forEach((el) => revealObserver.observe(el));
+
+// Scrollspy — highlight the active nav link for the section in view
+const sections = document.querySelectorAll('main section[id]');
+const navAnchors = document.querySelectorAll('.nav-links a');
+const spyObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        navAnchors.forEach((a) => {
+          a.classList.toggle('active', a.getAttribute('href') === `#${entry.target.id}`);
+        });
+      }
+    });
+  },
+  { rootMargin: '-45% 0px -50% 0px', threshold: 0 }
+);
+sections.forEach((section) => spyObserver.observe(section));
+
+// Back to top button
+const backToTop = document.getElementById('backToTop');
+const toggleBackToTop = () => {
+  backToTop.classList.toggle('visible', window.scrollY > 600);
+};
+toggleBackToTop();
+window.addEventListener('scroll', toggleBackToTop, { passive: true });
+backToTop.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
